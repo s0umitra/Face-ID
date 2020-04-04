@@ -16,8 +16,8 @@ for r, d, f in os.walk('input'):
         if '.jpg' or '.jpeg' or '.png' in file:
             files.append(os.path.join(r, file))
 
-for (i, file_name) in enumerate(files):
 
+def recognizer(file_name):
     print("Working on : " + str(file_name.split('\\')[1]))
 
     # resizing image
@@ -27,37 +27,26 @@ for (i, file_name) in enumerate(files):
     # converting image to from BGR to RGB
     iRGB = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-    locations = face_recognition.face_locations(iRGB, number_of_times_to_upsample=2, model='cnn')
+    locations = face_recognition.face_locations(iRGB, model='cnn')
     details = face_recognition.face_encodings(iRGB, locations, num_jitters=100)
 
-    # initialize the list of names for each face detected
     names = []
     names_known = []
 
-    # loop over the facial embeddings
-    for i in details:
-        # attempt to match each face in the input image to our known
-        # encodings
-        matches = face_recognition.compare_faces(data["details"], i, tolerance=0.4)
+    for k in details:
+        matches = face_recognition.compare_faces(data["details"], k, tolerance=0.4)
         name = "Unknown"
 
         # check to see if we have found a match
         if True in matches:
-            # find the indexes of all matched faces then initialize a
-            # dictionary to count the total number of times each face
-            # was matched
-            matches = [i for (i, b) in enumerate(matches) if b]
+
+            matches = [k for (k, b) in enumerate(matches) if b]
             counts = {}
 
-            # loop over the matched indexes and maintain a count for
-            # each recognized face face
-            for i in matches:
-                name = data["names"][i]
+            for k in matches:
+                name = data["names"][k]
                 counts[name] = counts.get(name, 0) + 1
 
-            # determine the recognized face with the largest number of
-            # votes (note: in the event of an unlikely tie Python will
-            # select first entry in the dictionary)
             name = max(counts, key=counts.get)
             names_known.append(name)
 
@@ -80,5 +69,9 @@ for (i, file_name) in enumerate(files):
     cv2.imwrite(("output/" + fn), image)
     cv2.waitKey(0)
     print("Saved output to : " + fn)
+
+
+for (i, file) in enumerate(files):
+    recognizer(file)
 
 print("----Done----")
