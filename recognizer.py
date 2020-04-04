@@ -3,8 +3,15 @@ import random
 import face_recognition
 import pickle
 import cv2
-
 from resizer import ori_in
+
+f = open("config.cfg", "r")
+configs = f.read()
+lines = f.readlines()
+for x in configs:
+    if x == "method":
+        configs.split()
+        method = str(configs[:])
 
 data = pickle.loads(open('data.sys', "rb").read())
 count = 0
@@ -20,13 +27,14 @@ for r, d, f in os.walk('input'):
 def recognizer(file_name):
     print("Working on : " + str(file_name.split('\\')[1]))
 
-    # resizing image
+    # resizing image (1200 x 1200)
     org_img = cv2.imread(file_name)
     image = ori_in(org_img)
 
-    # converting image to from BGR to RGB
+    # converting image from BGR to RGB
     iRGB = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
+    # image is scaled up for better processing
     locations = face_recognition.face_locations(iRGB, model='cnn')
     details = face_recognition.face_encodings(iRGB, locations, num_jitters=100)
 

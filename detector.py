@@ -1,8 +1,8 @@
 """
-Environment
+Environment:-
 python : 3.5
 cuda : 10.1
-Motivation : https://www.pyimagesearch.com/2018/06/18/face-recognition-with-opencv-python-and-deep-learning/
+uses cnn method - it would be good only to run it in cuda enabled environment with gpu( >= 4gb vram)
 
 """
 

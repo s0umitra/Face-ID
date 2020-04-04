@@ -24,8 +24,18 @@ for (i, file_name) in enumerate(files):
 
     for ((top, right, bottom, left), n) in zip(locations, range(0, len(locations))):
         # (x1,y1) as the top-left vertex and (x2,y2) as the bottom-right roi = im[y1:y2, x1:x2]
-        img = image[top - 30:bottom + 30, left - 30:right + 30]
-        cv2.imwrite('face-cropper\\output\\face_' + str(n + 1) + "_.jpg", img)
 
+        img = image[top - 30:bottom + 30, left - 30:right + 30]
+
+        try:
+            cv2.imwrite('face-cropper\\output\\image_' + str(i + 1) + '_face_' + str(n + 1) + ".jpg", img)
+
+        except:
+            print("Error - File : " + str(file_name.split('\\')[2]) + "was not processed!")
+            count -= 1
+
+    count += len(locations)
     print("Faces found : " + str(len(locations)))
-    print("Cropped Faces to output folder of face-cropper.")
+
+print("Total faces cropped : " + str(count))
+print("Cropped Faces to output folder of face-cropper.")
