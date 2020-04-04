@@ -1,39 +1,53 @@
+"""
+Environment
+python : 3.5
+cuda : 10.1
+Motivation : https://www.pyimagesearch.com/2018/06/18/face-recognition-with-opencv-python-and-deep-learning/
+
+"""
+
+import face_recognition
+import pickle
+import cv2
 import os
-from matplotlib import pyplot
-from mtcnn.mtcnn import MTCNN
+from resizer import ori_in
 
-
-def draw_faces(filename, result_list):
-    # load the image
-    data = pyplot.imread(filename)
-    # plot each face as a subplot
-    for i in range(len(result_list)):
-        # get coordinates
-        x1, y1, width, height = result_list[i]['box']
-        x2, y2 = x1 + width, y1 + height
-        pyplot.imshow(data[y1:y2, x1:x2])
-        pyplot.savefig(os.getcwd() + '\\output\\' + 'image_' + str(n+1) + '_face_' + str(i+1) + '.jpg')
-
-
-faces_path = os.getcwd() + '\\faces'
-detector = MTCNN(min_face_size=80, scale_factor=0.6)
-
+# r=root, d=directories, f=files
 files = []
-# r=root, d=directories, f = files
-for r, d, f in os.walk(faces_path):
+for r, d, f in os.walk('database'):
     for file in f:
-        if '.jpg' in file:
+        if '.jpg' or '.jpeg' or '.png' in file:
             files.append(os.path.join(r, file))
 
-for n in range(0, len(files)):
-    filename = files[n]
-    print(filename)
-    # load image from file
-    pixels = pyplot.imread(filename)
-    # create the detector, using default weights
-    # detect faces in the image
-    faces = detector.detect_faces(pixels)
-    # display faces on the original image
-    draw_faces(filename, faces)
+face_details = []
+names = []
 
+print("Encoding Faces...")
 
+for (i, file_name) in enumerate(files):
+
+    # extract the person name from the image path
+    print("Reading Face : {}/{}".format(i + 1, len(files)) + " : " + str(file_name.split('\\')[2]))
+    name = file_name.split('\\')[1]
+
+    # resizing image
+    org_img = cv2.imread(file_name)
+    image = ori_in(org_img)
+
+    # converting image to from BGR to RGB
+    iRGB = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+    locations = face_recognition.face_locations(iRGB, model='cnn')
+    details = face_recognition.face_encodings(iRGB, locations, num_jitters=100)
+
+    for n in details:
+        face_details.append(n)
+        names.append(name)
+
+# saving face details to a file
+face_dump = {"details": face_details, "names": names}
+f = open('data.sys', "wb")
+f.write(pickle.dumps(face_dump))
+f.close()
+
+print("All available faces are encoded and saved to : data.sys")
