@@ -1,13 +1,13 @@
 import cv2
 
 
-# it you want to change resolution then change value 1200 to required one
-def ori_in(org_img):
+# if you want to change resolution then change value scale to required one
+def ori_in(org_img, scale):
     (h, w) = org_img.shape[:2]
-    if h > w and h > 2000:
-        return image_resize(org_img, None, 2000)
-    elif w > h and w > 2000:
-        return image_resize(org_img, 2000, None)
+    if h > w and h > scale:
+        return image_resize(org_img, None, scale)
+    elif w > h and w > scale:
+        return image_resize(org_img, scale, None)
     else:
         return org_img
 

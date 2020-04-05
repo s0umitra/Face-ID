@@ -3,52 +3,54 @@ import random
 import face_recognition
 import pickle
 import cv2
+from arguments import arguments
 from resizer import ori_in
 
-f = open("config.cfg", "r")
-configs = f.read()
-lines = f.readlines()
-for x in configs:
-    if x == "method":
-        configs.split()
-        method = str(configs[:])
 
-data = pickle.loads(open('data.sys', "rb").read())
-count = 0
-files = []
-
-# r=root, d=directories, f=files
-for r, d, f in os.walk('input'):
-    for file in f:
-        if '.jpg' or '.jpeg' or '.png' in file:
-            files.append(os.path.join(r, file))
+def boot():
+    mode, scale, e_res, r_res, jitts = arguments()
+    print("Configuration :-\n\tModel = {}\n\tUpscale-factor = {}\n\tDetector's Image Resolution = {}\n\tRecognizer's "
+          "Image Resolution = {}\n\tJitters = {} ".format(mode, scale, e_res, r_res, jitts))
 
 
-def recognizer(file_name):
+def file_crawler(base):
+    files = []
+    for r, d, f in os.walk(base):
+        for file in f:
+            if '.jpg' or '.jpeg' or '.png' in file:
+                files.append(os.path.join(r, file))
+    return files
+
+
+def loader(name, res, scale, mode, jitts):
+    org_img = cv2.imread(name)
+    image = ori_in(org_img, int(res))
+    img_RGB = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    locations = face_recognition.face_locations(img_RGB, number_of_times_to_upsample=int(scale), model=mode)
+    details = face_recognition.face_encodings(img_RGB, locations, num_jitters=int(jitts))
+
+    return image, locations, details
+
+
+def recognizer(q, file_name):
     print("Working on : " + str(file_name.split('\\')[1]))
 
-    # resizing image (1200 x 1200)
-    org_img = cv2.imread(file_name)
-    image = ori_in(org_img)
+    mode, scale, e_res, r_res, jitts = arguments()
 
-    # converting image from BGR to RGB
-    iRGB = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    image, locations, details = loader(file_name, r_res, scale, mode, jitts)
 
-    # image is scaled up for better processing
-    locations = face_recognition.face_locations(iRGB, model='cnn')
-    details = face_recognition.face_encodings(iRGB, locations, num_jitters=100)
-
+    data = pickle.loads(open('data.sys', "rb").read())
     names = []
     names_known = []
 
-    for k in details:
-        matches = face_recognition.compare_faces(data["details"], k, tolerance=0.4)
+    for y in details:
+        matches = face_recognition.compare_faces(data["details"], y, tolerance=0.4)
         name = "Unknown"
 
         # check to see if we have found a match
         if True in matches:
 
-            matches = [k for (k, b) in enumerate(matches) if b]
+            matches = [y for (y, b) in enumerate(matches) if b]
             counts = {}
 
             for k in matches:
@@ -73,13 +75,22 @@ def recognizer(file_name):
 
     # Save the output image
     ns = '_'.join([str(n) for n in names_known])
-    fn = "Output_" + str(count + 1) + "_" + ns + ".jpg"
+    fn = "Output_" + str(q + 1) + "_" + ns + ".jpg"
     cv2.imwrite(("output/" + fn), image)
-    cv2.waitKey(0)
     print("Saved output to : " + fn)
 
 
-for (i, file) in enumerate(files):
-    recognizer(file)
+def main():
+    print("Encoded faces loaded successfully")
 
-print("----Done----")
+    file_list = file_crawler("input")
+
+    for (i, file) in enumerate(file_list):
+        recognizer(i, file)
+
+    print("----Done----")
+
+
+if __name__ == "__main__":
+    boot()
+    main()

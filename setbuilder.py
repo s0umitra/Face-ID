@@ -23,8 +23,6 @@ for (i, file_name) in enumerate(files):
     locations = face_recognition.face_locations(iRGB, model='cnn')
 
     for ((top, right, bottom, left), n) in zip(locations, range(0, len(locations))):
-        # (x1,y1) as the top-left vertex and (x2,y2) as the bottom-right roi = im[y1:y2, x1:x2]
-
         img = image[top - 30:bottom + 30, left - 30:right + 30]
 
         try:

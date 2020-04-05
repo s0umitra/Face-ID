@@ -6,48 +6,38 @@ uses cnn method - it would be good only to run it in cuda enabled environment wi
 
 """
 
-import face_recognition
 import pickle
-import cv2
-import os
-from resizer import ori_in
+from recognizer import loader, boot, file_crawler
+from arguments import arguments
 
-# r=root, d=directories, f=files
-files = []
-for r, d, f in os.walk('database'):
-    for file in f:
-        if '.jpg' or '.jpeg' or '.png' in file:
-            files.append(os.path.join(r, file))
 
-face_details = []
-names = []
-
-print("Encoding Faces...")
-
-for (i, file_name) in enumerate(files):
-
-    # extract the person name from the image path
-    print("Reading Face : {}/{}".format(i + 1, len(files)) + " : " + str(file_name.split('\\')[2]))
+def decoder(file_name):
+    print("Reading Face : {}/{}".format(i + 1, len(file_list)) + " : " + str(file_name.split('\\')[-1]))
     name = file_name.split('\\')[1]
 
-    # resizing image
-    org_img = cv2.imread(file_name)
-    image = ori_in(org_img)
-
-    # converting image to from BGR to RGB
-    iRGB = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-
-    locations = face_recognition.face_locations(iRGB, model='cnn')
-    details = face_recognition.face_encodings(iRGB, locations, num_jitters=100)
+    mode, scale, e_res, r_res, jitts = arguments()
+    image, locations, details = loader(file_name, e_res, scale, mode, jitts)
 
     for n in details:
         face_details.append(n)
         names.append(name)
 
-# saving face details to a file
-face_dump = {"details": face_details, "names": names}
-f = open('data.sys', "wb")
-f.write(pickle.dumps(face_dump))
-f.close()
 
-print("All available faces are encoded and saved to : data.sys")
+if __name__ == "__main__":
+    file_list = file_crawler("database")
+    face_details = []
+    names = []
+
+    boot()
+    print("Encoding Faces..", flush=True)
+
+    for (i, files) in enumerate(file_list):
+        decoder(files)
+
+    # saving face details to a file
+    face_dump = {"details": face_details, "names": names}
+    f = open('data.sys', "wb")
+    f.write(pickle.dumps(face_dump))
+    f.close()
+
+    print("\nAll available faces are encoded and saved to : data.sys")
