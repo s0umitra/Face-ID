@@ -3,22 +3,25 @@ import random
 import face_recognition
 import pickle
 import cv2
+import matplotlib.pyplot as plt
+
 from arguments import arguments
 from resizer import ori_in
 
 
 def boot():
     mode, scale, e_res, r_res, jitts = arguments()
-    print("Configuration :-\n\tModel = {}\n\tUpscale-factor = {}\n\tDetector's Image Resolution = {}\n\tRecognizer's "
+    print("Configurations :-\n\tModel = {}\n\tUpscale-factor = {}\n\tDetector's Image Resolution = {}\n\tRecognizer's "
           "Image Resolution = {}\n\tJitters = {} ".format(mode, scale, e_res, r_res, jitts))
 
 
 def file_crawler(base):
     files = []
     for r, d, f in os.walk(base):
-        for file in f:
-            if '.jpg' or '.jpeg' or '.png' in file:
-                files.append(os.path.join(r, file))
+        for one_file in f:
+            if '.jpg' or '.jpeg' or '.png' in one_file:
+                files.append(os.path.join(r, one_file))
+
     return files
 
 
@@ -32,16 +35,13 @@ def loader(name, res, scale, mode, jitts):
     return image, locations, details
 
 
-def recognizer(q, file_name):
-    print("Working on : " + str(file_name.split('\\')[1]))
-
-    mode, scale, e_res, r_res, jitts = arguments()
-
-    image, locations, details = loader(file_name, r_res, scale, mode, jitts)
-
+def recognizer(file_name):
     data = pickle.loads(open('data.sys', "rb").read())
     names = []
     names_known = []
+
+    mode, scale, e_res, r_res, jitts = arguments()
+    image, locations, details = loader(file_name, r_res, scale, mode, jitts)
 
     for y in details:
         matches = face_recognition.compare_faces(data["details"], y, tolerance=0.4)
@@ -63,7 +63,12 @@ def recognizer(q, file_name):
         # update the list of names
         names.append(name)
 
+    return locations, names_known, names, image
+
+
+def box_draw(q, rec):
     # loop over the recognized faces
+    locations, names_known, names, image = rec
     for ((top, right, bottom, left), name) in zip(locations, names):
         # draw the predicted face name on the image
         R = random.choice(range(0, 255, 30))
@@ -80,17 +85,13 @@ def recognizer(q, file_name):
     print("Saved output to : " + fn)
 
 
-def main():
-    print("Encoded faces loaded successfully")
+if __name__ == "__main__":
 
+    boot()
     file_list = file_crawler("input")
 
     for (i, file) in enumerate(file_list):
-        recognizer(i, file)
+        print("Working on : " + str(file.split('\\')[1]))
+        box_draw(i, recognizer(file))
 
     print("----Done----")
-
-
-if __name__ == "__main__":
-    boot()
-    main()

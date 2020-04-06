@@ -32,10 +32,10 @@ def arguments():
                     jitters = command[1].strip()
 
                 else:
-                    print("Could not set new value to : " + comm)
+                    return print("Could not set new value to : " + comm)
 
         except:
-            print("\nError detected in config.cfg")
+            return print("\nError detected in config.cfg")
             break
 
     return method, upscale, d_res, r_res, jitters

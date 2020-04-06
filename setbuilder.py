@@ -1,39 +1,59 @@
 import os
 import cv2
-import face_recognition
-from resizer import ori_in
 
-# r=root, d=directories, f=files
-files = []
-count = 0
+from arguments import arguments
+from recognizer import file_crawler, recognizer, loader
 
-for r, d, f in os.walk('face-cropper\\input'):
-    for file in f:
-        if '.jpg' or '.jpeg' or '.png' in file:
-            files.append(os.path.join(r, file))
 
-for (i, file_name) in enumerate(files):
-    print("Working on : " + str(file_name.split('\\')[2]))
+def face_cropper(files):
+    count = 0
+    root = 'data-builder\\'
 
-    org_img = cv2.imread(file_name)
-    image = ori_in(org_img)
+    for (i, file_name) in enumerate(files):
+        print("Working on : " + str(file_name.split('\\')[2]))
 
-    iRGB = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        mode, scale, e_res, r_res, jitts = arguments()
 
-    locations = face_recognition.face_locations(iRGB, model='cnn')
+        image, locations, details = loader(file_name, e_res, scale, mode, jitts)
 
-    for ((top, right, bottom, left), n) in zip(locations, range(0, len(locations))):
-        img = image[top - 30:bottom + 30, left - 30:right + 30]
+        for ((top, right, bottom, left), n) in zip(locations, range(0, len(locations))):
+            index = 0
+            img = image[top - 30:bottom + 30, left - 30:right + 30]
 
-        try:
-            cv2.imwrite('face-cropper\\output\\image_' + str(i + 1) + '_face_' + str(n + 1) + ".jpg", img)
+            cv2.imwrite(root + 'temp.jpg', img)
 
-        except:
-            print("Error - File : " + str(file_name.split('\\')[2]) + "was not processed!")
-            count -= 1
+            locations, names_known, names, images = recognizer(root + 'temp.jpg')
+            # print(locations, names_known, names)
+            print('Face : ' + str(n+1) + " : ", names)
 
-    count += len(locations)
-    print("Faces found : " + str(len(locations)))
+            if names[0] == "Unknown":
+                path = os.path.join(root, 'output\\_Unknowns_\\')
 
-print("Total faces cropped : " + str(count))
-print("Cropped Faces to output folder of face-cropper.")
+                if not os.path.exists(path):
+                    os.mkdir(path)
+                try:
+                    os.rename(root + 'temp.jpg', path + str(i) + str(n) + str(index) + '.jpg')
+                except:
+                    index += 1
+                    pass
+
+            else:
+
+                path = os.path.join(root, 'output\\' + str(names_known[0]))
+
+                if not os.path.exists(path):
+                    os.mkdir(path)
+                try:
+                    os.rename(root + 'temp.jpg', path + "\\" + str(i) + str(n) + str(index) + '.jpg')
+                except:
+                    index += 1
+                    pass
+
+            count += len(locations)
+
+    print("Total faces cropped : " + str(count))
+
+
+if __name__ == "__main__":
+    file_list = file_crawler('data-builder\\src')
+    face_cropper(file_list)
