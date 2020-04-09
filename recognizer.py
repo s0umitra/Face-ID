@@ -3,7 +3,6 @@ import random
 import face_recognition
 import pickle
 import cv2
-import matplotlib.pyplot as plt
 
 from arguments import arguments
 from resizer import ori_in
@@ -50,7 +49,10 @@ def recognizer(file_name):
         # check to see if we have found a match
         if True in matches:
 
-            matches = [y for (y, b) in enumerate(matches) if b]
+            for (ID, value) in enumerate(matches):
+                if value:
+                    matches = [ID]
+
             counts = {}
 
             for k in matches:
@@ -66,18 +68,58 @@ def recognizer(file_name):
     return locations, names_known, names, image
 
 
+def line_draw(image, left_top, right_bottom, color, thickness):
+    # left_top = (left, top)
+    # right_bottom = (right, bottom)
+
+    # dash's length
+    per = int(abs(left_top[0] - right_bottom[0]) * (20 / 100))
+
+    # top line
+    start_point = [left_top, (right_bottom[0], left_top[1])]
+    end_point = [(left_top[0] + per, left_top[1]), (right_bottom[0] - per, left_top[1])]
+    for x, y in zip(start_point, end_point):
+        cv2.line(image, x, y, color, thickness)
+
+    # bottom line
+    start_point = [(left_top[0], right_bottom[1]), right_bottom]
+    end_point = [(left_top[0] + per, right_bottom[1]), (right_bottom[0] - per, right_bottom[1])]
+    for x, y in zip(start_point, end_point):
+        cv2.line(image, x, y, color, thickness)
+
+    # left line
+    start_point = [left_top, (left_top[0], right_bottom[1])]
+    end_point = [(left_top[0], left_top[1] + per), (left_top[0], right_bottom[1] - per)]
+    for x, y in zip(start_point, end_point):
+        cv2.line(image, x, y, color, thickness)
+
+    # right line
+    start_point = [(right_bottom[0], left_top[1]), right_bottom]
+    end_point = [(right_bottom[0], left_top[1] + per), (right_bottom[0], right_bottom[1] - per)]
+    for x, y in zip(start_point, end_point):
+        cv2.line(image, x, y, color, thickness)
+
+
 def box_draw(q, rec):
     # loop over the recognized faces
     locations, names_known, names, image = rec
+
     for ((top, right, bottom, left), name) in zip(locations, names):
         # draw the predicted face name on the image
-        R = random.choice(range(0, 255, 30))
-        G = random.choice(range(0, 255, 30))
-        B = random.choice(range(0, 255, 30))
-        cv2.rectangle(image, (left, top), (right, bottom), (R, G, B), 2)
-        y = top - 15 if top - 15 > 15 else top + 15
-        cv2.putText(image, name, (left, y), cv2.FONT_HERSHEY_DUPLEX, 0.7, (R, G, B), 2)
+        R = random.choice(range(0, 240, 20))
+        G = random.choice(range(0, 240, 20))
+        B = random.choice(range(0, 240, 20))
+        RGB = (R, G, B)
 
+        # draw lines over the face
+        # cv2.rectangle(image, (left, top), (right, bottom), (R, G, B), 2)
+        x = (left, top)
+        y = (right, bottom)
+        line_draw(image, x, y, (R, G, B), 2)
+        
+        # draw name
+        cv2.putText(image, name, (left, top - 10 if top > 15 else bottom + 10), cv2.FONT_HERSHEY_DUPLEX, .60, (R, G, B), 2)
+        
     # Save the output image
     ns = '_'.join([str(n) for n in names_known])
     fn = "Output_" + str(q + 1) + "_" + ns + ".jpg"
