@@ -1,1 +1,0 @@
-images on which the recognizer will work are to be pasted here.
