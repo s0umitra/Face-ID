@@ -8,8 +8,9 @@ import face_recognition
 
 
 def configs(use_type):
-    p1 = os.getcwd()
-    f = open(p1 + "\\config.cfg", "r")
+
+    path = os.getcwd()
+    f = open(path + "\\config.cfg", "r")
     config_lines = f.readlines()
 
     conf_mode = ''
@@ -19,7 +20,6 @@ def configs(use_type):
 
     conf_detector = ['hog', '1', '1000', '100']
     conf_rec_img = ['hog', '1', '1500', '100', '0.4']
-
     conf_rec_vid_and_liv = ['hog', '1', '500', '0', '0.4', '0']
 
     for (i, line) in enumerate(config_lines):
@@ -90,7 +90,7 @@ def configs(use_type):
         print("Error in " + conf_mode + " configs, values set to default")
     if use_type == 'encoder':
         return conf_detector
-    if use_type == 'rec-img':
+    if use_type in ('rec-img', 'set-builder'):
         return conf_rec_img
     if use_type == 'rec-vid-liv':
         return conf_rec_vid_and_liv
@@ -100,19 +100,19 @@ def boot_loader(use_type, caller):
     arguments = configs(use_type)
     s = ''
     if use_type == 'encoder':
-        mode = 'Encoder'
+        mode = "Encoder's Resolution     "
     else:
-        mode = 'Recognizer'
-        s = s + "\n\tTolerance = " + arguments[4]
+        mode = "Recognizer's Resolution  "
+        s = s + "\n\tTolerance                 : " + arguments[4]
         if caller == 'rec-live':
-            s = s + "\n\tSave to Disk = " + arguments[5]
+            s = s + "\n\tSave to Disk              : " + arguments[5]
 
     print(mode + "'s Configurations :-"
-                 "\n\tMode = " + arguments[0] +
-          "\n\tUpscale-factor = " + arguments[1] +
+                 "\n\tMode                      : " + arguments[0] +
+          "\n\tUpscale-factor            : " + arguments[1] +
           "\n\t" + mode +
-          "'s Resolution = " + arguments[2] +
-          "\n\tJitters = " + arguments[3] +
+          " : " + arguments[2] +
+          "\n\tJitters                   : " + arguments[3] +
           s
           )
     return arguments
@@ -124,7 +124,7 @@ def image_frame_loader(frame, args, use_type):
     max_res = args[2]
     jitts = args[3]
 
-    if use_type in ('rec-img', 'encoder'):
+    if use_type in ('rec-img', 'encoder', 'set-builder'):
         org_img = cv2.imread(frame)
     else:
         org_img = frame
