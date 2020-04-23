@@ -15,7 +15,6 @@
 You can also:
   - Work on multiple input files
   - Run the specific recognition program
-  - Export documents as Markdown, HTML and PDF
 
 
 ### Package Dependencies
