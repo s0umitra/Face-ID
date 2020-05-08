@@ -15,8 +15,6 @@ def rec_liv(args):
         key = cv2.waitKey(1) & 0xFF
         if key == ord('z'):
             break
-    stream.release()
-    cv2.destroyAllWindows()
 
 
 if __name__ == '__main__':
@@ -28,5 +26,5 @@ if __name__ == '__main__':
     rec_liv(args)
 
     stream.release()
-
+    cv2.destroyAllWindows()
     print("\n------Task Completed------")

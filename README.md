@@ -1,13 +1,13 @@
 # **Face-ID**
 
-##### This is an 'in-progress' Face Detector and Recognizer
+#### This is an 'in-progress' Face Detector and Recognizer
 
 - Face Encoder to encode face details extracted from provided images
 - Recognizing programs to recognize faces if available in database
 - Set Builder to crop and sort the faces from multiple images provided
 
 
----
+
 ## New Features!
 
   - Now supports Videos and Live Streams

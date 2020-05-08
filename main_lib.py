@@ -267,7 +267,6 @@ def file_crawler(base):
     files = []
     for r, d, f in os.walk(base):
         for one_file in f:
-            if '.jpg' or '.jpeg' or '.png' in one_file:
-                files.append(os.path.join(r, one_file))
+            files.append(os.path.join(r, one_file))
 
     return files
