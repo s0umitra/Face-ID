@@ -1,23 +1,20 @@
-# Face-ID
+# **Face-ID**
 
-##### This is an 'in-progress' Face Detector and Recognizer built-in Python.
+##### This is an 'in-progress' Face Detector and Recognizer
 
-  - Detects Faces in Images
-  - Recognizes them if available
-  - Set Builder crop and sort the faces
+- Face Encoder to encode face details extracted from provided images
+- Recognizing programs to recognize faces if available in database
+- Set Builder to crop and sort the faces from multiple images provided
 
-### New Features!
+
+---
+## New Features!
 
   - Now supports Videos and Live Streams
   - Config file is updated to match the usage requirements
 
 
-You can also:
-  - Work on multiple input files
-  - Run the specific recognition program
-
-
-### Package Dependencies
+## Package Dependencies
 
 * face_recognition
 * pickle
@@ -25,11 +22,12 @@ You can also:
 * cv2
 * random
 
-### Notes
+## Notes
 
-* Based on face-recognition api maintained by Adam Geitgey
+* Based on face-recognition api maintained by **Adam Geitgey**
 
-License
-----
-MIT
+## License
 
+[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](https://github.com/s0umitra/Face-ID/blob/master/LICENSE.md)
+
+This software is licenced under [MIT](https://github.com/s0umitra/Face-ID/blob/master/LICENSE.md)

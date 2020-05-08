@@ -62,6 +62,5 @@ if __name__ == "__main__":
 
     file_list = file_crawler('data-builder\\src')
     args = boot_loader('set-builder', 'set-builder')
-"""
     dataset = dataset_loader()
-    face_cropper(file_list)"""
+    face_cropper(file_list)
