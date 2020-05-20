@@ -1,20 +1,31 @@
 # **Face-ID**
 
-#### This is an 'in-progress' Face Detector and Recognizer
+#### This is a 'python-based' Face Detector and Recognizer
 
-- Face Encoder to encode face details extracted from provided images
-- Recognizing programs to recognize faces if available in database
-- Set Builder to crop and sort the faces from multiple images provided
+- ***encoder.py*** encodes the face details extracted from provided images
+- Individial Recognizing programs to use as per need,
+	- ***rec_img.py*** recognizes the Faces in Images
+	- ***rec_vid.py*** recognizes the Faces in Videos
+	- ***rec_live.py*** recognizes the Faces in Live WebCam Feed
+- ***set_builder.py*** crops the faces from provided images and sort them wrt database
+- ***config.cfg*** provides easy to change parameters
 
-
-
-## New Features!
+### New Features!
 
   - Now supports Videos and Live Streams
   - Config file is updated to match the usage requirements
 
+### Sample Usage:
 
-## Package Dependencies
+***rec_img.py*** <br>
+
+![](https://github.com/s0umitra/Face-ID/blob/master/.readme/rec_img1.jpg)
+
+![](https://github.com/s0umitra/Face-ID/blob/master/.readme/rec_img2.jpg)
+
+
+
+### Package Dependencies
 
 * face_recognition
 * pickle
@@ -22,11 +33,11 @@
 * cv2
 * random
 
-## Notes
+### Notes
 
-* Based on face-recognition api maintained by **Adam Geitgey**
+* Based on [face-recognition](https://github.com/ageitgey/face_recognition) api maintained by **Adam Geitgey**
 
-## License
+### License
 
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](https://github.com/s0umitra/Face-ID/blob/master/LICENSE.md)
 
