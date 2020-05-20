@@ -8,7 +8,6 @@ import face_recognition
 
 
 def configs(use_type):
-
     path = os.getcwd()
     f = open(path + "\\config.cfg", "r")
     config_lines = f.readlines()
@@ -83,9 +82,9 @@ def configs(use_type):
                         except:
                             error_flag = 1
 
-
         except:
             print("\nError detected in config.cfg")
+
     if error_flag == 1:
         print("Error in " + conf_mode + " configs, values set to default")
     if use_type == 'encoder':
@@ -100,19 +99,20 @@ def boot_loader(use_type, caller):
     arguments = configs(use_type)
     s = ''
     if use_type == 'encoder':
-        mode = "Encoder's Resolution     "
+        mode = "Encoder's"
     else:
-        mode = "Recognizer's Resolution  "
-        s = s + "\n\tTolerance                 : " + arguments[4]
+        mode = "Recognizer's"
+        s = s + "\n\t{:20s}  ---> ".format('Tolerance') + arguments[4]
         if caller == 'rec-live':
-            s = s + "\n\tSave to Disk              : " + arguments[5]
+            s = s + "\n\t{:20s}  ---> ".format('Save to Disk') + arguments[5]
 
-    print(mode + "'s Configurations :-"
-                 "\n\tMode                      : " + arguments[0] +
-          "\n\tUpscale-factor            : " + arguments[1] +
-          "\n\t" + mode +
-          " : " + arguments[2] +
-          "\n\tJitters                   : " + arguments[3] +
+    # print('{:32s} ---> {}'.format(prt_str[i], prt_out[i]))
+    print(mode +
+          " Configurations :-"
+          "\n\t{:20s}  ---> ".format('Mode') + arguments[0] +
+          "\n\t{:20s}  ---> ".format('Upscale-factor') + arguments[1] +
+          "\n\t{:20s}  ---> ".format(mode) + arguments[2] +
+          "\n\t{:20s}  ---> ".format('Jitters') + arguments[3] +
           s
           )
     return arguments

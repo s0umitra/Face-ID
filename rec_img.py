@@ -8,6 +8,8 @@ if __name__ == "__main__":
     dataset = dataset_loader()
     file_list = file_crawler("input\\image")
 
+    print("\nFound {} Images to process!".format(len(file_list)))
+
     for (i, file) in enumerate(file_list):
         print("\nProcessing {}/{} : ".format(i + 1, len(file_list)) + file.split('\\')[-1])
 
