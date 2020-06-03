@@ -6,7 +6,7 @@
 
 - ***encoder.py*** encodes the face details extracted from provided images
 
-- Individial Recognizing programs to use as per need,
+- Individial Recognizing programs to use as per the requirement;
 
 	- ***rec_img.py*** recognizes the Faces in Images
 	
@@ -50,3 +50,5 @@
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](https://github.com/s0umitra/Face-ID/blob/master/LICENSE.md)
 
 This software is licenced under [MIT](https://github.com/s0umitra/Face-ID/blob/master/LICENSE.md)
+
+[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
