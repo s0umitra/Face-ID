@@ -1,13 +1,21 @@
 # **Face-ID**
 
+[![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
+
 #### This is a 'python-based' Face Detector and Recognizer
 
 - ***encoder.py*** encodes the face details extracted from provided images
+
 - Individial Recognizing programs to use as per need,
+
 	- ***rec_img.py*** recognizes the Faces in Images
+	
 	- ***rec_vid.py*** recognizes the Faces in Videos
+	
 	- ***rec_live.py*** recognizes the Faces in Live WebCam Feed
+	
 - ***set_builder.py*** crops the faces from provided images and sort them wrt database
+
 - ***config.cfg*** provides easy to change parameters
 
 ### New Features!
