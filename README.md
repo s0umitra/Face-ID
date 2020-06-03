@@ -1,6 +1,6 @@
 # **Face-ID**
 
-[![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
+[![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)]()
 
 #### This is a 'python-based' Face Detector and Recognizer
 
@@ -51,4 +51,4 @@
 
 This software is licenced under [MIT](https://github.com/s0umitra/Face-ID/blob/master/LICENSE.md)
 
-[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)]()
