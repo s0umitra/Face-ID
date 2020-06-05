@@ -1,4 +1,0 @@
-/database/abc/faces.jpg
-
-person's name will be labelled by reading the folder's name!
-(eg. abc)
