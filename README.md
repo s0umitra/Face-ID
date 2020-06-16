@@ -6,7 +6,7 @@
 
 - ***encoder.py*** encodes the face details extracted from provided images
 
-- Individial Recognizing programs to use as per the requirement;
+- Individual Recognizing programs to use as per the requirement;
 
 	- ***rec_img.py*** recognizes the Faces in Images
 	
