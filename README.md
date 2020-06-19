@@ -2,8 +2,11 @@
 
 [![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
 
-#### This is a 'python-based' Face Detector and Recognizer
+A <strong>'python-based'</strong> Face Detector and Recognizer that
+works on images, videos and live stream too!
 
+For user convenience, working is distributed over individual programs.
+                                            
 - ***encoder.py*** encodes the face details extracted from provided images
 
 - Individual Recognizing programs to use as per the requirement;
