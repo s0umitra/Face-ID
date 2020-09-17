@@ -28,7 +28,7 @@ For user convenience, working is distributed over individual programs.
 
 ### Sample Usage:
 
-***rec_img.py*** <br>
+**Output:** ***rec_img.py*** <br>
 
 ![](https://github.com/s0umitra/Face-ID/blob/master/.readme/rec_img1.jpg)
 
